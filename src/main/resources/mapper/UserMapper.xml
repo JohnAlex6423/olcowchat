@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.olcow.chat.dao.UserDao">
+    <sql id="USER_TABLE">
+        user_info
+    </sql>
+    <sql id="USER_FRIEND">
+        user_friend
+    </sql>
+
+    <select id="selectUserInfoByUids" parameterType="java.util.List" resultType="com.olcow.chat.entity.UserInfo">
+        SELECT *FROM
+        <include refid="USER_TABLE"/>
+        WHERE uid IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="insertFriend" parameterType="java.lang.Integer">
+        INSERT INTO
+        <include refid="USER_FRIEND"/>
+        VALUES
+        <trim prefix="(" suffix=")">
+            #{auid,jdbcType=INTEGER},#{buid,jdbcType=INTEGER}
+        </trim>
+    </insert>
+
+    <select id="selectFriendByABuid" parameterType="java.lang.Integer" resultType="com.olcow.chat.entity.UserFriend">
+        SELECT auid,buid FROM
+        <include refid="USER_FRIEND"/>
+        WHERE (auid = #{auid,jdbcType=INTEGER} and buid = #{buid,jdbcType=INTEGER}) or
+        (auid = #{buid,jdbcType=INTEGER} and buid = #{auid,jdbcType=INTEGER})
+    </select>
+    <select id="selectAuidByBuid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT auid FROM
+        <include refid="USER_FRIEND"/>
+        WHERE buid
+        <trim prefix="=">
+            #{uid,jdbcType=INTEGER}
+        </trim>
+    </select>
+    <select id="selectBuidByAuid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT buid FROM
+        <include refid="USER_FRIEND"/>
+        WHERE auid
+        <trim prefix="=">
+            #{uid,jdbcType=INTEGER}
+        </trim>
+    </select>
+</mapper>

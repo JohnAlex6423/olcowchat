@@ -1,0 +1,57 @@
+server:
+  port: 1008
+spring:
+  datasource:
+    druid:
+      #配置监控统计拦截的filters，去掉后监控界面SQL无法进行统计，'wall'用于防火墙
+      filters: stat,wall
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/olcowsso?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai&amp&useSSL=false
+      username: root
+      password: root
+      #初始化大小
+      initial-size: 1
+      #最小连接数
+      min-idle: 1
+      #最大连接数
+      max-active: 20
+      #获取连接等待超时时间
+      max-wait: 60000
+      #间隔多久才进行一次检测，检测需要关闭的空闲连接，单位毫秒
+      time-between-eviction-runs-millis: 60000
+      #一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 30000
+      #测试语句是否执行正确
+      validation-query: SELECT 'x'
+      #指明连接是否被空闲连接回收器(如果有)进行检验.如果检测失败,则连接将被从池中去除.
+      test-while-idle: true
+      #借出连接时不要测试，否则很影响性能
+      test-on-borrow: false
+      test-on-return: false
+      #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
+      pool-prepared-statements: false
+      #与Oracle数据库PSCache有关，再druid下可以设置的比较高
+      max-pool-prepared-statement-per-connection-size: 20
+
+  redis:
+    #数据库索引
+    database: 0
+    host: 39.96.40.12
+    port: 6379
+    #redis服务器链接密码
+    password: f49e38
+    lettuce:
+      #连接池最大空闲时间
+      shutdown-timeout: 100ms
+      pool:
+        #连接池最大链接数
+        max-active: 8
+        #连接池最大空闲链接
+        max-idle: 8
+        #连接池最大阻塞时间
+        max-wait: -1ms
+        #链接池最小空闲链接
+        min-idle: 0
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.olcow.chat.entity
