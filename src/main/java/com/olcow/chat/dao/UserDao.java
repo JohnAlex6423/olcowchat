@@ -16,4 +16,6 @@ public interface UserDao {
     List<Integer> selectAuidByBuid(Integer uid);
 
     List<Integer> selectBuidByAuid(Integer uid);
+
+    List<UserInfo> selectUserInfoLikeNickname(String nickname);
 }
