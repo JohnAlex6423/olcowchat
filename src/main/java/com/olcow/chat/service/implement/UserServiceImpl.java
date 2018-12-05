@@ -39,4 +39,14 @@ public class UserServiceImpl implements UserService {
         }
         return userDao.selectUserInfoByUids(uidA);
     }
+
+    @Override
+    public List<UserInfo> findUserInfoLikeNickname(String nickname) {
+        return userDao.selectUserInfoLikeNickname(nickname);
+    }
+
+    @Override
+    public List<UserInfo> findUserInfoLikeUid(Integer uid) {
+        return userDao.selectUserInfoLikeUid(uid);
+    }
 }

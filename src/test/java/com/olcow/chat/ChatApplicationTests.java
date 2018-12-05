@@ -31,8 +31,8 @@ public class ChatApplicationTests {
 
 	@Test
 	public void contextLoads() {
-        for (UserInfo userInfo:userDao.selectUserInfoLikeNickname("傻")){
-            System.err.println(userInfo.getName());
+        for (UserInfo userInfo:userDao.selectUserInfoLikeUid(7)){
+            System.err.println(userInfo.getName()+userInfo.getUid());
         }
 	}
 

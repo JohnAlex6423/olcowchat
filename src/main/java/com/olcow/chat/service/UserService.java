@@ -1,6 +1,5 @@
 package com.olcow.chat.service;
 
-import com.olcow.chat.entity.UserFriend;
 import com.olcow.chat.entity.UserInfo;
 
 import java.util.List;
@@ -14,4 +13,8 @@ public interface UserService {
     boolean isExsitFriend(Integer auid,Integer buid);
 
     List<UserInfo> findFriends(Integer uid);
+
+    List<UserInfo> findUserInfoLikeNickname(String nickname);
+
+    List<UserInfo> findUserInfoLikeUid(Integer uid);
 }

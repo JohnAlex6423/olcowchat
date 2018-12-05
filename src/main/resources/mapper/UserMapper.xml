@@ -54,4 +54,9 @@
         WHERE
         name LIKE CONCAT(CONCAT('%',#{nickname},'%'))
     </select>
+    <select id="selectUserInfoLikeUid" resultType="com.olcow.chat.entity.UserInfo" parameterType="java.lang.Integer">
+        SELECT *FROM
+        <include refid="USER_TABLE"/>
+        WHERE uid LIKE CONCAT(CONCAT('%',#{uid},'%'))
+    </select>
 </mapper>

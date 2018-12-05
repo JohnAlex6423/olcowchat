@@ -197,4 +197,34 @@ public class AddFriend {
         map.put("userinfo",userService.findUserInfoByUids(list));
         return map;
     }
+
+    @ResponseBody
+    @RequestMapping("/searchuserinfo/bynicknameoruid")
+    public Map searchUserInfoByNicknameOrUid(@RequestParam(value = "content")
+                                             String content){
+        if (content.length()>6){
+            Map map = new HashMap();
+            map.put("uid",null);
+            map.put("nickname",userService.findUserInfoLikeNickname(content));
+            return map;
+        }else {
+            Integer a;
+            try {
+                a = Integer.valueOf(content);
+            } catch (NumberFormatException e){
+                a=null;
+            }
+            if (a ==null){
+                Map map = new HashMap();
+                map.put("uid",null);
+                map.put("nickname",userService.findUserInfoLikeNickname(content));
+                return map;
+            }else {
+                Map map = new HashMap();
+                map.put("uid",userService.findUserInfoLikeUid(a));
+                map.put("nickname",userService.findUserInfoLikeNickname(content));
+                return map;
+            }
+        }
+    }
 }
