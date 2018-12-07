@@ -202,12 +202,18 @@ public class AddFriend {
     @RequestMapping("/searchuserinfo/bynicknameoruid")
     public Map searchUserInfoByNicknameOrUid(@RequestParam(value = "content")
                                              String content){
+        if (content.equals("")){
+            Map map = new HashMap();
+            map.put("uid",new ArrayList<>());
+            map.put("nickname",new ArrayList<>());
+            return map;
+        }
         if (content.length()>6){
             Map map = new HashMap();
-            map.put("uid",null);
+            map.put("uid",new ArrayList<>());
             map.put("nickname",userService.findUserInfoLikeNickname(content));
             return map;
-        }else {
+        }else if (content.length()<6&&content.length()>3){
             Integer a;
             try {
                 a = Integer.valueOf(content);
@@ -216,7 +222,7 @@ public class AddFriend {
             }
             if (a ==null){
                 Map map = new HashMap();
-                map.put("uid",null);
+                map.put("uid",new ArrayList<>());
                 map.put("nickname",userService.findUserInfoLikeNickname(content));
                 return map;
             }else {
@@ -225,6 +231,11 @@ public class AddFriend {
                 map.put("nickname",userService.findUserInfoLikeNickname(content));
                 return map;
             }
+        } else {
+            Map map = new HashMap();
+            map.put("uid",new ArrayList<>());
+            map.put("nickname",userService.findUserInfoLikeNickname(content));
+            return map;
         }
     }
 }
