@@ -20,4 +20,8 @@ public interface UserDao {
     List<UserInfo> selectUserInfoLikeNickname(String nickname);
 
     List<UserInfo> selectUserInfoLikeUid(Integer uid);
+
+    UserInfo selectUserInfoByUid(Integer uid);
+
+    List<UserInfo> selectUserInfoByNickname(String nickname);
 }

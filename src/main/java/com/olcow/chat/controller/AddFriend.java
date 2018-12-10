@@ -238,4 +238,45 @@ public class AddFriend {
             return map;
         }
     }
+
+    @ResponseBody
+    @RequestMapping("/searchpreinfo/bynicknameoruid")
+    public Map searchPreUserInfoByNicknameOrUid(@RequestParam(value = "content")
+                                                String content){
+        if (content.equals("")){
+            Map map = new HashMap();
+            map.put("uid",null);
+            map.put("nickname",null);
+            return map;
+        }
+        if (content.length()>6){
+            Map map = new HashMap();
+            map.put("uid",null);
+            map.put("nickname",userService.findUserInfoByNickname(content));
+            return map;
+        }else if (content.length()<6&&content.length()>3){
+            Integer a;
+            try {
+                a = Integer.valueOf(content);
+            } catch (NumberFormatException e){
+                a=null;
+            }
+            if (a ==null){
+                Map map = new HashMap();
+                map.put("uid",null);
+                map.put("nickname",userService.findUserInfoByNickname(content));
+                return map;
+            }else {
+                Map map = new HashMap();
+                map.put("uid",userService.findUserInfoByUid(a));
+                map.put("nickname",userService.findUserInfoByNickname(content));
+                return map;
+            }
+        } else {
+            Map map = new HashMap();
+            map.put("uid",null);
+            map.put("nickname",userService.findUserInfoByNickname(content));
+            return map;
+        }
+    }
 }

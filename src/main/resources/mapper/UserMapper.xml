@@ -51,12 +51,29 @@
     <select id="selectUserInfoLikeNickname" resultType="com.olcow.chat.entity.UserInfo" parameterType="java.lang.String">
         SELECT *FROM
         <include refid="USER_TABLE"/>
-        WHERE
-        name LIKE CONCAT(CONCAT('%',#{nickname},'%'))
+        WHERE name LIKE CONCAT(CONCAT('%',#{nickname},'%'))
+        LIMIT 10;
     </select>
     <select id="selectUserInfoLikeUid" resultType="com.olcow.chat.entity.UserInfo" parameterType="java.lang.Integer">
         SELECT *FROM
         <include refid="USER_TABLE"/>
         WHERE uid LIKE CONCAT(CONCAT('%',#{uid},'%'))
+        LIMIT 10;
+    </select>
+    <select id="selectUserInfoByUid" resultType="com.olcow.chat.entity.UserInfo" parameterType="java.lang.Integer">
+        SELECT *FROM
+        <include refid="USER_TABLE"/>
+        WHERE uid
+        <trim prefix="=">
+            #{uid,jdbcType=INTEGER}
+        </trim>
+    </select>
+    <select id="selectUserInfoByNickname" resultType="com.olcow.chat.entity.UserInfo" parameterType="java.lang.String">
+        SELECT *FROM
+        <include refid="USER_TABLE"/>
+        WHERE name
+        <trim prefix="=">
+            #{nickname,jdbcType=VARCHAR}
+        </trim>
     </select>
 </mapper>

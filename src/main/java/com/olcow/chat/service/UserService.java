@@ -17,4 +17,8 @@ public interface UserService {
     List<UserInfo> findUserInfoLikeNickname(String nickname);
 
     List<UserInfo> findUserInfoLikeUid(Integer uid);
+
+    UserInfo findUserInfoByUid(Integer uid);
+
+    List<UserInfo> findUserInfoByNickname(String nickname);
 }
