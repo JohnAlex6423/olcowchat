@@ -31,13 +31,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserInfo> findFriends(Integer uid) {
-        List<Integer> uidA = userDao.selectAuidByBuid(uid);
-        List<Integer> uidB = userDao.selectBuidByAuid(uid);
-        uidA.addAll(uidB);
-        if (uidA.isEmpty()){
+        List<Integer> list= userDao.selectFriendByUid(uid);
+        if (list.isEmpty()){
             return null;
         }
-        return userDao.selectUserInfoByUids(uidA);
+        return userDao.selectUserInfoByUids(list);
     }
 
     @Override
@@ -58,5 +56,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserInfo> findUserInfoByNickname(String nickname) {
         return userDao.selectUserInfoByNickname(nickname);
+    }
+
+    @Override
+    public int delFriendByAuidAndBuid(Integer aUid, Integer bUid) {
+        return userDao.deleteFriendByAuidAndBuid(aUid,bUid);
     }
 }

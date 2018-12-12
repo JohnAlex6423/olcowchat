@@ -24,4 +24,8 @@ public interface UserDao {
     UserInfo selectUserInfoByUid(Integer uid);
 
     List<UserInfo> selectUserInfoByNickname(String nickname);
+
+    int deleteFriendByAuidAndBuid(Integer aUid,Integer bUid);
+
+    List<Integer> selectFriendByUid(Integer uid);
 }

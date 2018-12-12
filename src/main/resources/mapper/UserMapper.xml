@@ -76,4 +76,24 @@
             #{nickname,jdbcType=VARCHAR}
         </trim>
     </select>
+    <delete id="deleteFriendByAuidAndBuid" parameterType="java.lang.Integer">
+        DELETE FROM
+        <include refid="USER_FRIEND"/>
+        WHERE auid
+        <trim prefix="=">
+            #{auid,jdbcType=INTEGER}
+        </trim>
+        AND buid
+        <trim prefix="=">
+            #{buid,jdbcType=INTEGER}
+        </trim>
+    </delete>
+    <select id="selectFriendByUid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT buid FROM
+        <include refid="USER_FRIEND"/>
+        WHERE auid
+        <trim prefix="=">
+            #{uid,jdbcType=INTEGER}
+        </trim>
+    </select>
 </mapper>

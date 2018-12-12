@@ -40,76 +40,19 @@ public class AddFriend {
         if (jsonObject.getByte("permission")==0){
             return "no activity";
         }
-        List<Integer> addFList = (List<Integer>) redisTemplate.opsForHash().get("chat:"+jsonObject.getInteger("uid"),9);
-        if (addFList == null){
-            addFList = new ArrayList<>();
-        }else {
-            for (Integer anAddFList : addFList) {
-                if (anAddFList.equals(bUid)) {
-                    return "already add";
-                }
+        if (userService.isExsitFriend(jsonObject.getInteger("uid"),bUid)){
+            return "already add";
+        } else {
+            if (userService.addFriend(jsonObject.getInteger("uid"),bUid) == 1){
+                return "successful";
+            }else {
+                return "fail";
             }
         }
-        addFList.add(bUid);
-        HashMap<Integer,List<Integer>> map = new HashMap<>();
-        map.put(9,addFList);
-        redisTemplate.opsForHash().putAll("chat:"+jsonObject.getInteger("uid"),map);
-        return "successful";
     }
 
     @ResponseBody
-    @RequestMapping("/agreeadd")
-    public String agreeAdd(@RequestParam(value = "session")
-                           String session,
-                           @RequestParam(value = "buid")
-                           Integer bUid){
-        JSONObject jsonObject;
-        try {
-            jsonObject = JSON.parseObject(redisTemplate.opsForValue().get(session).toString());
-        } catch (Exception e){
-            return "no login";
-        }
-        List<Integer> fList = (List<Integer>) redisTemplate.opsForHash().get("chat:"+jsonObject.getInteger("uid"),9);
-        if (fList==null){
-            return "no request";
-        }
-        for (int i=0;i<fList.size();i++){
-            if (fList.get(i).equals(bUid)){
-                if (userService.isExsitFriend(jsonObject.getInteger("uid"),bUid)){
-                    fList.remove(i);
-                    if (fList.isEmpty()){
-                        HashMap<Integer,List<Integer>> map = new HashMap<>();
-                        map.put(9,fList);
-                        redisTemplate.opsForHash().delete("chat:"+jsonObject.getInteger("uid"),9);
-                        return "already add";
-                    } else {
-                        HashMap<Integer,List<Integer>> map = new HashMap<>();
-                        map.put(9,fList);
-                        redisTemplate.opsForHash().putAll("chat:"+jsonObject.getInteger("uid"),map);
-                        return "already add";
-                    }
-                } else {
-                    if (userService.addFriend(jsonObject.getInteger("uid"),bUid) == 1){
-                        fList.remove(i);
-                        if (fList.isEmpty()){
-                            return "successful";
-                        } else {
-                            HashMap<Integer,List<Integer>> map = new HashMap<>();
-                            map.put(9,fList);
-                            redisTemplate.opsForHash().putAll("chat:"+jsonObject.getInteger("uid"),map);
-                            return "successful";
-                        }
-                    }else {
-                        return "mysql error";
-                    }
-                }
-            }
-        }
-        return "no request";
-    }
-
-    @ResponseBody
-    @RequestMapping("/refuseadd")
+    @RequestMapping("/delfriend")
     public String refuseAdd(@RequestParam(value = "session")
                                         String session,
                             @RequestParam(value = "buid")
@@ -120,36 +63,11 @@ public class AddFriend {
         } catch (Exception e){
             return "no login";
         }
-        List<Integer> fList = (List<Integer>) redisTemplate.opsForHash().get("chat:"+jsonObject.getInteger("uid"),9);
-        if (fList==null){
-            return "no request";
+        if (userService.delFriendByAuidAndBuid(jsonObject.getInteger("uid"),bUid)==1){
+            return "successful";
+        } else {
+            return "fail";
         }
-        for (int i=0;i<fList.size();i++){
-            if (fList.get(i).equals(bUid)){
-                if (userService.isExsitFriend(jsonObject.getInteger("uid"),bUid)){
-                    fList.remove(i);
-                    if (fList.isEmpty()){
-                        return "already add";
-                    } else {
-                        HashMap<Integer,List<Integer>> map = new HashMap<>();
-                        map.put(9,fList);
-                        redisTemplate.opsForHash().putAll("chat:"+jsonObject.getInteger("uid"),map);
-                        return "already add";
-                    }
-                } else {
-                    fList.remove(i);
-                    if (fList.isEmpty()){
-                        return "successful";
-                    } else {
-                        HashMap<Integer,List<Integer>> map = new HashMap<>();
-                        map.put(9,fList);
-                        redisTemplate.opsForHash().putAll("chat:"+jsonObject.getInteger("uid"),map);
-                        return "successful";
-                    }
-                }
-            }
-        }
-        return "no request";
     }
 
     @ResponseBody
@@ -161,7 +79,12 @@ public class AddFriend {
             jsonObject = JSON.parseObject(redisTemplate.opsForValue().get(session).toString());
         } catch (Exception e){
             Map map = new HashMap();
-            map.put("error","no login");
+            map.put("info","no login");
+            return map;
+        }
+        if (jsonObject.getByte("permission")==0){
+            Map map = new HashMap();
+            map.put("info","no activity");
             return map;
         }
         List<UserInfo> userInfos = userService.findFriends(jsonObject.getInteger("uid"));
@@ -175,28 +98,6 @@ public class AddFriend {
         return map;
     }
 
-    @ResponseBody
-    @RequestMapping("/getfriendsrequest")
-    public Map getFriendsRequest(@RequestParam(value = "session")
-                                 String session){
-        JSONObject jsonObject;
-        try {
-            jsonObject = JSON.parseObject(redisTemplate.opsForValue().get(session).toString());
-        } catch (Exception e){
-            Map map = new HashMap();
-            map.put("info","no login");
-            return map;
-        }
-        List<Integer> list = (List<Integer>) redisTemplate.opsForHash().get("chat:"+jsonObject.getInteger("uid"),9);
-        if (list.isEmpty()){
-            Map map = new HashMap();
-            map.put("info","no request");
-            return map;
-        }
-        Map map = new HashMap();
-        map.put("userinfo",userService.findUserInfoByUids(list));
-        return map;
-    }
 
     @ResponseBody
     @RequestMapping("/searchuserinfo/bynicknameoruid")

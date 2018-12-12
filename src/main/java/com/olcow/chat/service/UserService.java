@@ -21,4 +21,6 @@ public interface UserService {
     UserInfo findUserInfoByUid(Integer uid);
 
     List<UserInfo> findUserInfoByNickname(String nickname);
+
+    int delFriendByAuidAndBuid(Integer aUid, Integer bUid);
 }
