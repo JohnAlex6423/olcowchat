@@ -5,24 +5,20 @@ import com.alibaba.fastjson.JSONObject;
 import com.olcow.chat.entity.Message;
 import com.olcow.chat.until.GetCurrentTime;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
-@Controller
+@RestController
 public class MessageController {
 
     @Resource
     private RedisTemplate redisTemplate;
 
-    @ResponseBody
     @RequestMapping("/getmessage")
     public Map getMessage(@RequestParam(value = "session")
                                       String session){
@@ -39,7 +35,6 @@ public class MessageController {
         return map;
     }
 
-    @ResponseBody
     @RequestMapping("/sendmessage")
     public String sendMessage(@RequestParam(value = "session")
                                           String session,
@@ -57,10 +52,29 @@ public class MessageController {
         if (addFList == null){
             addFList = new ArrayList<>();
         }
-        addFList.add(new Message(GetCurrentTime.getCurrentTime(),message));
+        addFList.add(new Message(message,new Date().getTime()));
         HashMap<Integer,List<Message>> map = new HashMap<>();
         map.put(bUid,addFList);
         redisTemplate.opsForHash().putAll("chat:"+jsonObject.getInteger("uid"),map);
+        redisTemplate.expire("chat:"+jsonObject.getInteger("uid"),168, TimeUnit.HOURS);
+        return "successful";
+    }
+
+    @RequestMapping("/delmessage")
+    public String delMessage(@RequestParam(value = "session")
+                             String session){
+        JSONObject jsonObject;
+        try {
+            jsonObject = JSON.parseObject(redisTemplate.opsForValue().get(session).toString());
+        } catch (Exception e){
+            return "no login";
+        }
+        try {
+            redisTemplate.delete("chat:"+jsonObject.getInteger("uid"));
+        }catch (Exception e){
+            System.err.println("delete key error:"+GetCurrentTime.getCurrentTime() + e.getMessage());
+            return "fail";
+        }
         return "successful";
     }
 }

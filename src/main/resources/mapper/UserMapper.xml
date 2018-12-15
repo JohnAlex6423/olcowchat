@@ -81,11 +81,11 @@
         <include refid="USER_FRIEND"/>
         WHERE auid
         <trim prefix="=">
-            #{auid,jdbcType=INTEGER}
+            #{aUid,jdbcType=INTEGER}
         </trim>
         AND buid
         <trim prefix="=">
-            #{buid,jdbcType=INTEGER}
+            #{bUid,jdbcType=INTEGER}
         </trim>
     </delete>
     <select id="selectFriendByUid" parameterType="java.lang.Integer" resultType="java.lang.Integer">

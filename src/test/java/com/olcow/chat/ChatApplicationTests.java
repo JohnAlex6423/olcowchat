@@ -31,9 +31,6 @@ public class ChatApplicationTests {
 
 	@Test
 	public void contextLoads() {
-        for (Integer i:userDao.selectFriendByUid(43)){
-            System.err.println(i);
-        }
+	    System.err.println(userDao.deleteFriendByAuidAndBuid(43,123457));
 	}
-
 }

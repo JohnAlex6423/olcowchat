@@ -8,7 +8,7 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://mysql/olcowsso?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai&amp&useSSL=false
       username: root
-      password: f49e38
+      password: root
       #初始化大小
       initial-size: 1
       #最小连接数

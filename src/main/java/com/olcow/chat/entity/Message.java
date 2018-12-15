@@ -4,9 +4,9 @@ public class Message {
 
     private String content;
 
-    private String date;
+    private long date;
 
-    public Message(String content, String date) {
+    public Message(String content, long date) {
         this.content = content;
         this.date = date;
     }
@@ -19,11 +19,11 @@ public class Message {
         this.content = content;
     }
 
-    public String getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(long date) {
         this.date = date;
     }
 }
