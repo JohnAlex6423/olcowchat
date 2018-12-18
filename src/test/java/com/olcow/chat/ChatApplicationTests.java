@@ -31,6 +31,6 @@ public class ChatApplicationTests {
 
 	@Test
 	public void contextLoads() {
-	    System.err.println(userDao.deleteFriendByAuidAndBuid(43,123457));
+	    redisTemplate.opsForHash().entries("chat:1022");
 	}
 }

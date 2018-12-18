@@ -48,14 +48,18 @@ public class MessageController {
         } catch (Exception e){
             return "no login";
         }
-        List<Message> addFList = (List<Message>) redisTemplate.opsForHash().get("chat:"+jsonObject.getInteger("uid"),bUid);
+        List<Message> addFList = (List<Message>) redisTemplate.opsForHash().get("chat:"+bUid,jsonObject.getInteger("uid"));
+        System.err.println(jsonObject.getInteger("uid"));
         if (addFList == null){
             addFList = new ArrayList<>();
         }
         addFList.add(new Message(message,new Date().getTime()));
-        HashMap<Integer,List<Message>> map = new HashMap<>();
-        map.put(bUid,addFList);
-        redisTemplate.opsForHash().putAll("chat:"+jsonObject.getInteger("uid"),map);
+        Map map = redisTemplate.opsForHash().entries("chat:"+bUid);
+        if (map.isEmpty()){
+            map = new HashMap();
+        }
+        map.put(jsonObject.getInteger("uid"),addFList);
+        redisTemplate.opsForHash().putAll("chat:"+bUid,map);
         redisTemplate.expire("chat:"+jsonObject.getInteger("uid"),168, TimeUnit.HOURS);
         return "successful";
     }
