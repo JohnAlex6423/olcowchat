@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 public class AddFriend {
 
     @Resource
@@ -25,7 +26,6 @@ public class AddFriend {
     @Resource
     private UserService userService;
 
-    @ResponseBody
     @RequestMapping("/addfriend")
     public String  addFriend(@RequestParam(value = "session")
                                      String session,
@@ -51,7 +51,6 @@ public class AddFriend {
         }
     }
 
-    @ResponseBody
     @RequestMapping("/delfriend")
     public String refuseAdd(@RequestParam(value = "session")
                                         String session,
@@ -70,7 +69,6 @@ public class AddFriend {
         }
     }
 
-    @ResponseBody
     @RequestMapping("/getfriends")
     public Map getFriends(@RequestParam(value = "session")
                                                  String session){
@@ -99,7 +97,6 @@ public class AddFriend {
     }
 
 
-    @ResponseBody
     @RequestMapping("/searchuserinfo/bynicknameoruid")
     public Map searchUserInfoByNicknameOrUid(@RequestParam(value = "content")
                                              String content){
@@ -140,7 +137,6 @@ public class AddFriend {
         }
     }
 
-    @ResponseBody
     @RequestMapping("/searchpreinfo/bynicknameoruid")
     public Map searchPreUserInfoByNicknameOrUid(@RequestParam(value = "content")
                                                 String content){
@@ -179,5 +175,11 @@ public class AddFriend {
             map.put("nickname",userService.findUserInfoByNickname(content));
             return map;
         }
+    }
+
+    @RequestMapping("/getuserinfobyuid")
+    public UserInfo getUserInfoByUid(@RequestParam(value = "uid")
+                                     Integer uid){
+        return userService.findUserInfoByUid(uid);
     }
 }

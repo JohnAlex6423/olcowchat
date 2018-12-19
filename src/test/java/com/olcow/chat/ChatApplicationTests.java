@@ -31,6 +31,6 @@ public class ChatApplicationTests {
 
 	@Test
 	public void contextLoads() {
-	    redisTemplate.opsForHash().entries("chat:1022");
+	    System.err.println(userDao.selectUserInfoByUid(1)==null);
 	}
 }
