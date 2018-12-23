@@ -32,6 +32,7 @@ public class MessageController {
         }
         HashMap<Integer,Object> map;
         map = (HashMap<Integer, Object>) redisTemplate.opsForHash().entries("chat:"+jsonObject.getInteger("uid"));
+        redisTemplate.delete("chat:"+jsonObject.getInteger("uid"));
         return map;
     }
 
@@ -53,7 +54,8 @@ public class MessageController {
         if (addFList == null){
             addFList = new ArrayList<>();
         }
-        addFList.add(new Message(message,new Date().getTime()));
+        long time = new Date().getTime();
+        addFList.add(new Message(message,time));
         Map map = redisTemplate.opsForHash().entries("chat:"+bUid);
         if (map.isEmpty()){
             map = new HashMap();
@@ -61,7 +63,7 @@ public class MessageController {
         map.put(jsonObject.getInteger("uid"),addFList);
         redisTemplate.opsForHash().putAll("chat:"+bUid,map);
         redisTemplate.expire("chat:"+jsonObject.getInteger("uid"),168, TimeUnit.HOURS);
-        return "successful";
+        return String.valueOf(time);
     }
 
     @RequestMapping("/delmessage")

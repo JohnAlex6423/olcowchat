@@ -5,10 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.olcow.chat.entity.UserInfo;
 import com.olcow.chat.service.UserService;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
