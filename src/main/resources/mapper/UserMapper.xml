@@ -29,8 +29,7 @@
     <select id="selectFriendByABuid" parameterType="java.lang.Integer" resultType="com.olcow.chat.entity.UserFriend">
         SELECT auid,buid FROM
         <include refid="USER_FRIEND"/>
-        WHERE (auid = #{auid,jdbcType=INTEGER} and buid = #{buid,jdbcType=INTEGER}) or
-        (auid = #{buid,jdbcType=INTEGER} and buid = #{auid,jdbcType=INTEGER})
+        WHERE (auid = #{auid,jdbcType=INTEGER} and buid = #{buid,jdbcType=INTEGER})
     </select>
     <select id="selectAuidByBuid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         SELECT auid FROM

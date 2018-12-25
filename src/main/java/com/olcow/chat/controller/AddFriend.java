@@ -35,9 +35,6 @@ public class AddFriend {
         } catch (Exception e){
             return "no login";
         }
-        if (jsonObject.getByte("permission")==0){
-            return "no activity";
-        }
         if (userService.isExsitFriend(jsonObject.getInteger("uid"),bUid)){
             return "already add";
         } else {
@@ -76,11 +73,6 @@ public class AddFriend {
         } catch (Exception e){
             Map map = new HashMap();
             map.put("info","no login");
-            return map;
-        }
-        if (jsonObject.getByte("permission")==0){
-            Map map = new HashMap();
-            map.put("info","no activity");
             return map;
         }
         List<UserInfo> userInfos = userService.findFriends(jsonObject.getInteger("uid"));
