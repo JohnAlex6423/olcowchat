@@ -2,6 +2,7 @@ package com.olcow.chat.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.olcow.chat.entity.Uids;
 import com.olcow.chat.entity.UserInfo;
 import com.olcow.chat.service.UserService;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -171,5 +172,16 @@ public class AddFriend {
     public UserInfo getUserInfoByUid(@RequestParam(value = "uid")
                                      Integer uid){
         return userService.findUserInfoByUid(uid);
+    }
+
+    @RequestMapping("/getuserinfobyuids")
+    public List<UserInfo> getUserInfoByUids(@RequestParam(value = "uids")
+                                            String uidsJson){
+        List<Uids> uids = JSON.parseArray(uidsJson,Uids.class);
+        List<Integer> uids1 = new ArrayList<>();
+        for (Uids uid : uids) {
+            uids1.add(uid.getUid());
+        }
+        return userService.findUserInfoByUids(uids1);
     }
 }
