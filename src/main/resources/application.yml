@@ -39,7 +39,7 @@ spring:
     host: redis
     port: 6379
     #redis服务器链接密码
-    password: f49e38
+    password: root
     lettuce:
       #连接池最大空闲时间
       shutdown-timeout: 100ms
